@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="
+                   http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-08-07" author="niro_bb">
+        <sql>
+            create table if not exists http_logs (
+            id bigserial primary key,
+            date timestamp not null,
+            type text not null,
+            method text not null,
+            status_code integer not null,
+            url text not null,
+            request text not null,
+            response text not null
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
