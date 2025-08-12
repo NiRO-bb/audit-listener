@@ -12,4 +12,6 @@ public interface KafkaAnnotationLogRepository extends JpaRepository<KafkaAnnotat
 
     Optional<KafkaAnnotationLog> findByIdAndStage(UUID id, String stage);
 
+    long countById(UUID id);
+
 }

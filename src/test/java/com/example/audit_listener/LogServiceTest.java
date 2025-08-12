@@ -1,5 +1,6 @@
 package com.example.audit_listener;
 
+import com.example.audit_listener.config.TestConfig;
 import com.example.audit_listener.dto.KafkaAnnotationLog;
 import com.example.audit_listener.dto.KafkaHttpLog;
 import com.example.audit_listener.services.LogService;
@@ -10,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @SpringBootTest
 @ExtendWith(ContextSetup.class)
 public class LogServiceTest {
@@ -22,14 +20,7 @@ public class LogServiceTest {
 
     @Test
     public void testSaveAnnotationSuccess() {
-        KafkaAnnotationLog log = new KafkaAnnotationLog(
-                LocalDateTime.now(),
-                "INFO",
-                "START",
-                UUID.randomUUID(),
-                "Class.method",
-                "{ \"field\":\"value\" }"
-        );
+        KafkaAnnotationLog log = TestConfig.getAnnotationLog();
         KafkaAnnotationLog savedLog = service.saveAnnotationLog(log);
         Assertions.assertNotNull(savedLog);
     }
@@ -42,15 +33,7 @@ public class LogServiceTest {
 
     @Test
     public void testSaveHttpSuccess() {
-        KafkaHttpLog log = new KafkaHttpLog(
-                LocalDateTime.now(),
-                "Outgoing",
-                "GET",
-                200,
-                "http://localhost:8081/get",
-                "{}",
-                "{ \"field\":\"value\" }"
-        );
+        KafkaHttpLog log = TestConfig.getHttpLog();
         KafkaHttpLog savedLog = service.saveHttpLog(log);
         Assertions.assertNotNull(savedLog);
     }
