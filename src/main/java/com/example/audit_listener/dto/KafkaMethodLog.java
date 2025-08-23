@@ -2,15 +2,14 @@ package com.example.audit_listener.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,36 +21,31 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "annotation_logs")
-public class KafkaAnnotationLog {
+@Document(createIndex = true, indexName = "#{@getMethodIndex}")
+public class KafkaMethodLog {
 
     @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long logId;
+    @Field(name = "id")
+    private String logId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @Field(type = FieldType.Date, format = DateFormat.strict_date_hour_minute_second_millis)
     private LocalDateTime date;
 
-    @Column(name = "logging_level")
     private String logLevel;
 
-    /**
-     * Represents stage of method execution: START, END or ERROR.
-     */
     private String stage;
 
-    @Column(name = "cross_cutting_id")
+    @Field(name = "cross_cutting_id")
     private UUID id;
 
-    @Column(name = "method_name")
+    @Field(name = "method")
     private String methodName;
 
     private String body;
 
-    public KafkaAnnotationLog(LocalDateTime date, String logLevel, String stage, UUID id, String methodName, String body) {
+    public KafkaMethodLog(LocalDateTime date, String logLevel, String stage, UUID id, String methodName, String body) {
         this.date = date;
         this.logLevel = logLevel;
         this.stage = stage;

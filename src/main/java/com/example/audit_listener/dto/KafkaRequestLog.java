@@ -2,15 +2,14 @@ package com.example.audit_listener.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
 
@@ -21,32 +20,33 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "http_logs")
-public class KafkaHttpLog {
+@Document(createIndex = true, indexName = "#{@getRequestIndex}")
+public class KafkaRequestLog {
 
     @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @Field(type = FieldType.Date, format = DateFormat.strict_date_hour_minute_second_millis)
     private LocalDateTime date;
 
+    @Field(name = "direction")
     private String type;
 
     private String method;
 
-    @Column(name = "status_code")
     private int statusCode;
 
     private String url;
 
+    @Field(name = "requestBody")
     private String request;
 
+    @Field(name = "responseBody")
     private String response;
 
-    public KafkaHttpLog(LocalDateTime date, String type, String method, int statusCode, String url, String request, String response) {
+    public KafkaRequestLog(LocalDateTime date, String type, String method, int statusCode, String url, String request, String response) {
         this.date = date;
         this.type = type;
         this.method = method;
