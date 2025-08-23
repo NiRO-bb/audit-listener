@@ -16,15 +16,16 @@ git clone https://github.com/NiRO-bb/audit-listener.git
 
 2. Create .env files
 You must write .env_dev and .env_prod files with following values (you can use .env_template file from root directory):
-* POSTGRES_USER - PSQL username (only for .env_prod - used for PSQL container)
-* POSTGRES_PASSWORD - PSQL database password (only for .env_prod - used for PSQL container)
-* POSTGRES_DB - PSQL database name (only for .env_prod - used for PSQL container)
-* SPRING_DATASOURCE_URL - url for database connection
-* SPRING_DATASOURCE_USERNAME - username for database connection
-* SPRING_DATASOURCE_PASSWORD - database password for database connection 
 * SPRING_KAFKA_BOOTSTRAP_SERVERS - host and port (host:port) for Kafka broker connection
 * AUDIT_LISTENER_KAFKA_CONSUMER_GROUP_ID - group id of consumer (this application)
-* AUDIT_LISTENER_KAFKA_TOPIC_NAME - Kafka topic form which messages will be retrieved
+* AUDIT_LISTENER_KAFKA_METHOD_TOPIC_NAME - Kafka topic from which method logs will be retrieved
+* AUDIT_LISTENER_KAFKA_REQUEST_TOPIC_NAME - Kafka topic from which request logs will be retrieved
+* AUDIT_LISTENER_KAFKA_ERROR_TOPIC_NAME - Kafka topic where error logs will be sent
+* AUDIT_LISTENER_KAFKA_PARTITION_NUM
+* AUDIT_LISTENER_KAFKA_REPLICATION_FACTOR
+* SPRING_ELASTICSEARCH_URIS
+* AUDIT_LISTENER_INDEX_METHOD 
+* AUDIT_LISTENER_INDEX_REQUEST
 
 <p>.env_dev - for local development </p>
 <p>.env_prod - for container (docker) development</p>
@@ -39,7 +40,7 @@ mvn clean package
 ```shell
 docker compose up
 ```
-<b>!</b> docker-compose.yml uses docker network - 'prodcuer-consumer'. 
+<b>!</b> docker-compose.yml uses docker network - 'producer-consumer'. 
 This for interaction with other containers. But you must create this network manually:
 ```shell
 docker network create producer-consumer
