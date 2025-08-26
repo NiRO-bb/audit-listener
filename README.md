@@ -16,6 +16,7 @@ git clone https://github.com/NiRO-bb/audit-listener.git
 
 2. Create .env files
 You must write .env_dev and .env_prod files with following values (you can use .env_template file from root directory):
+
 * SPRING_KAFKA_BOOTSTRAP_SERVERS - host and port (host:port) for Kafka broker connection
 * AUDIT_LISTENER_KAFKA_CONSUMER_GROUP_ID - group id of consumer (this application)
 * AUDIT_LISTENER_KAFKA_METHOD_TOPIC_NAME - Kafka topic from which method logs will be retrieved
